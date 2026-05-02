@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WebAppl1.Data;
-using WebAppl1.Data.Entities;
+using ClassLibraryInfrastructure1.Data;
+using ClassLibraryInfrastructure1.Data.Entities;
 
 namespace WebAppl1.Pages
 {

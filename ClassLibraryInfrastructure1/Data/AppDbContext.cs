@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebAppl1.Data.Entities;
-using WebAppl1.Pages;
+using ClassLibraryInfrastructure1.Data.Entities;
 
-namespace WebAppl1.Data
+namespace ClassLibraryInfrastructure1.Data
 {
     public class AppDbContext : DbContext
     {

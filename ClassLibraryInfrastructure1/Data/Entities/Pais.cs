@@ -1,4 +1,4 @@
-﻿namespace WebAppl1.Data.Entities
+﻿namespace ClassLibraryInfrastructure1.Data.Entities
 {
     public class Pais
     {
