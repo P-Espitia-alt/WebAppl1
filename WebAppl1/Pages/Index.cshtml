@@ -1,0 +1,42 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Cree un nuevo astronauta";
+}
+<h1> @ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Astronauta.Nombre" class="control-label"></label>
+        <input asp-for="Astronauta.Nombre" class="form-control" />
+        <span asp-validation-for="Astronauta.Nombre" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Astronauta.Apellido" class="control-label"></label>
+        <input asp-for="Astronauta.Apellido" class="form-control" />
+        <span asp-validation-for="Astronauta.Apellido" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Astronauta.FechaNacimiento" class="control-label"></label>
+        <input asp-for="Astronauta.FechaNacimiento" type="date" class="form-control" min="1900-01-01" max="2100-12-31" />
+        <span asp-validation-for="Astronauta.FechaNacimiento" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">País</label>
+        <select asp-for="Astronauta.PaisId" asp-items="Model.PaisesSelect" class="form-select">
+            <option value="">-- Selecciona un país --</option>
+        </select>
+        <span asp-validation-for="Astronauta.PaisId" class="text-danger"></span>
+    </div>
+    @*
+    <div class="form-group">
+        <label asp-for="Astronauta.TotalMisiones" class="control-label"></label>
+        <input asp-for="Astronauta.TotalMisiones" class="form-control" />
+        <span asp-validation-for="Astronauta.TotalMisiones" class="text-danger"></span>
+    </div>
+    *@
+    
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-primary" />
+    </div>
+</form>

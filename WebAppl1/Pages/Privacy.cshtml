@@ -1,0 +1,81 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Astronautas";
+}
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Astronautas?.Any() ?? false)
+{
+    <div class="row">
+        <div class="col-7">
+            <ol class="list-group list-group-numbered">
+                @foreach (var a in Model.Astronautas)
+                {
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-6 d-flex flex-column align-items-start">
+                                <div>
+                                    <strong>@a.Nombre @a.Apellido</strong><br />
+                                    <small>Fecha nacimiento: @a.FechaNacimiento.ToShortDateString() · Misiones: @a.TotalMisiones</small>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <button type="button" class="btn btn-primary btn-sm mt-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalAstronauta"
+                                data-nombre="@a.Nombre"
+                                data-apellido="@a.Apellido"
+                                data-fecha="@a.FechaNacimiento.ToShortDateString()"
+                                data-pais="@a.PaisId"
+                                data-misiones="@a.TotalMisiones">
+                            Ver detalle
+                        </button>
+                    </li>
+                }
+            </ol>
+        </div>
+    </div>
+    
+}
+else
+{
+    <p>No hay astronautas en la base de datos.</p>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalAstronauta" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle del Astronauta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nombre:</strong> <span id="modalNombre"></span></p>
+                <p><strong>Apellido:</strong> <span id="modalApellido"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span id="modalFecha"></span></p>
+                <p><strong>País ID:</strong> <span id="modalPais"></span></p>
+                @*<p><strong>Total Misiones:</strong> <span id="modalMisiones"></span></p>*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const modal = document.getElementById('modalAstronauta')
+        modal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget
+            document.getElementById('modalNombre').textContent = button.getAttribute('data-nombre')
+            document.getElementById('modalApellido').textContent = button.getAttribute('data-apellido')
+            document.getElementById('modalFecha').textContent = button.getAttribute('data-fecha')
+            document.getElementById('modalPais').textContent = button.getAttribute('data-pais')
+        })
+    </script>
+}
+

@@ -1,0 +1,24 @@
+﻿@page
+@model WebAppl1.Pages.MisionModel
+@{
+    ViewData["Title"] = "Misiones";
+}
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.MisionesList?.Any() ?? false)
+{
+    <ol class="list-group list-group-numbered">
+        @foreach (var m in Model.MisionesList)
+        {
+            <li class="list-group-item">
+                <strong>@m.Nombre</strong><br />
+                <small>Fecha lanzamiento: @m.FechaLanzamiento.ToShortDateString() · Fecha retorno: @m.FechaRetorno?.ToShortDateString() · Vehículo: @m.Vehiculo · Estado: @m.Estado</small>
+            </li>
+        }
+    </ol>
+}
+else
+{
+    <p>No hay misiones en la base de datos.</p>
+}
+
