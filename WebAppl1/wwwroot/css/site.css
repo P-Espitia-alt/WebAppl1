@@ -17,8 +17,46 @@ html {
   min-height: 100%;
 }
 
+.nav-link {
+    color: #f0d1ff !important;
+}
+
+.navbar-brand {
+    color: #f0d1ff !important;
+}
+
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url("/images/FondoEstrellas.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #f0d1ff;
+}
+
+.list-group-item {
+    background: rgba(255, 25, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 25, 255, 0.8);
+    border-radius: 10px;
+    color: aliceblue
+}
+
+.sector-astronauta { /* Estilo para el sector del astronauta AsignarMision */
+    background: rgba(0, 100, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 100, 255, 0.8);
+    border-radius: 5px;
+    padding-left: 15px;
+    color: aliceblue;
+}
+
+.modal-content {
+    background: rgba(255, 25, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 25, 255, 0.8);
+    border-radius: 10px;
+    color: aliceblue
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +66,8 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+.footer {
+    color: #f0d1ff;
 }

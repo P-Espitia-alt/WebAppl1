@@ -28,7 +28,7 @@
                                 data-nombre="@a.Nombre"
                                 data-apellido="@a.Apellido"
                                 data-fecha="@a.FechaNacimiento.ToShortDateString()"
-                                data-pais="@a.PaisId"
+                                data-pais="@a.Pais?.Nombre" @* ?. significa: si Pais no es null, muestra el Nombre, si es null no explotes *@
                                 data-misiones="@a.TotalMisiones">
                             Ver detalle
                         </button>

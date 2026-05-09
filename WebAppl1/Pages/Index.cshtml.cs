@@ -26,7 +26,9 @@ namespace WebAppl1.Pages
             PaisesSelect = new SelectList(
                 await _context.Pais.ToListAsync(), 
                 "PaisId", "Nombre"
-                );
+            );
+
+            Astronauta.FechaNacimiento = DateTime.Today;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -34,7 +36,7 @@ namespace WebAppl1.Pages
             if (!ModelState.IsValid)
             {
                 PaisesSelect = new SelectList(
-                    await _context.Pais.ToListAsync(), 
+                    await _context.Pais.ToListAsync(),
                     "PaisId", "Nombre"
                     );
                 return Page();
@@ -44,6 +46,6 @@ namespace WebAppl1.Pages
             return RedirectToPage("/Mision");
         }
 
-       
+
     }
 }

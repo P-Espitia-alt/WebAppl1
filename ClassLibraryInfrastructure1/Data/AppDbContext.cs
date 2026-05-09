@@ -11,5 +11,6 @@ namespace ClassLibraryInfrastructure1.Data
         public DbSet<Astronauta> Astronauta { get; set; }
         public DbSet<Mision> Mision { get; set; }
         public DbSet<Pais> Pais { get; set; }
+        public DbSet<MisionAstronauta> MisionAstronauta { get; set; }
     }
 }

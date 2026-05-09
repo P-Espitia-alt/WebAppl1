@@ -1,0 +1,112 @@
+﻿@page
+@model WebAppl1.Pages.AsignarMisionModel
+@{
+    ViewData["Title"] = "Asignar Misión";
+}
+<h1> @ViewData["Title"]</h1>
+
+
+
+<div class="row justify-content-center mb-4">
+    <div class="col-6">
+
+        <button type="button" class="btn btn-primary w-100 mb-3" 
+                data-bs-toggle="modal"
+                data-bs-target="#modalAsignar">
+            + Asignar Misión a Astronauta
+        </button>
+
+        <div class="modal fade" id="modalAsignar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Asignar Misión</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Astronauta</label>
+                                <select asp-for="AstronautaSeleccionado" asp-items="Model.AstronautasSelect" class="form-select">
+                                    <option value="">-- Selecciona un astronauta --</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Misión</label>
+                                <select asp-for="MisionSeleccionada" asp-items="Model.MisionesSelect" class="form-select">
+                                    <option value="">-- Selecciona una misión --</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rol</label>
+                                <input asp-for="Rol" class="form-control" placeholder="Ej: Comandante, Piloto..." />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Asignar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    @if (Model.Astronautas?.Any() ?? false)
+    {
+        @foreach (var astro in Model.Astronautas)
+        {
+            <div class="row mb-5">
+
+                <div class="col-3">
+                    @* nombre del astronauta *@
+                    <ul class="list-group">
+                        <li class=" sector-astronauta">
+                            <strong>
+                                @astro.Nombre @astro.Apellido
+                            </strong>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-6">
+                    @* misiones de ese astronauta *@
+                    @if (astro.MisionesAsignadas?.Any() ?? false)
+                    {
+                        <ul class="list-group">
+                            @foreach (var ma in astro.MisionesAsignadas)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@ma.Mision.Nombre</strong><br />
+                                    <small>
+                                        Fecha lanzamiento: @ma.Mision.FechaLanzamiento.ToShortDateString() ·
+                                        Fecha retorno: @ma.Mision.FechaRetorno?.ToShortDateString() ·
+                                        Vehículo: @ma.Mision.Vehiculo ·
+                                        Estado: @ma.Mision.Estado ·
+                                        Rol: @ma.Rol
+                                    </small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                No tiene misiones asignadas.
+                            </li>
+                        </ul>
+                    }
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <p>No hay astronautas registrados.</p>
+    }
+</div>
