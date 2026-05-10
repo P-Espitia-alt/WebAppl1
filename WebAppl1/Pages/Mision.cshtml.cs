@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WebAppl1.Data;
-using WebAppl1.Data.Entities;
+using ClassLibraryInfrastructure1.Data;
+using ClassLibraryInfrastructure1.Data.Entities;
 
 namespace WebAppl1.Pages
 {
@@ -18,7 +18,7 @@ namespace WebAppl1.Pages
         public async Task OnGetAsync()
         {
             MisionesList = await _context.Mision
-                .Where(m => m.Estado == "Completada")
+                //.Where(m => m.Estado == "Completada")
                 .ToListAsync();
 
         }

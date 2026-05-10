@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WebAppl1.Data;
-using WebAppl1.Data.Entities;
+using ClassLibraryInfrastructure1.Data;
+using ClassLibraryInfrastructure1.Data.Entities;
 
 namespace WebAppl1.Pages
 {
@@ -20,30 +20,41 @@ namespace WebAppl1.Pages
         [BindProperty]
         public Astronauta Astronauta { get; set; } = new();
         public SelectList PaisesSelect { get; set; }
+        public DateTime FechaMaxima { get; set; } //para la edad
 
         public async Task OnGetAsync()
         {
             PaisesSelect = new SelectList(
                 await _context.Pais.ToListAsync(), 
                 "PaisId", "Nombre"
-                );
+            );
+
+            Astronauta.FechaNacimiento = DateTime.Today;
+            FechaMaxima = DateTime.Today.AddYears(-18);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (Astronauta.FechaNacimiento == DateTime.MinValue ||
+                Astronauta.FechaNacimiento > DateTime.Today.AddYears(-18))
+            {
+                ModelState.AddModelError("Astronauta.FechaNacimiento",
+                    "El astronauta debe tener al menos 18 años");
+            }
             if (!ModelState.IsValid)
             {
                 PaisesSelect = new SelectList(
-                    await _context.Pais.ToListAsync(), 
+                    await _context.Pais.ToListAsync(),
                     "PaisId", "Nombre"
                     );
                 return Page();
             }
+            
             _context.Astronauta.Add(Astronauta);
             await _context.SaveChangesAsync();
-            return RedirectToPage("/Mision");
+            return RedirectToPage("/Privacy");
         }
 
-       
+
     }
 }

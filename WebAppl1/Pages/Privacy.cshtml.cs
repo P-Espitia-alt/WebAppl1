@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WebAppl1.Data;
-using WebAppl1.Data.Entities;
+using ClassLibraryInfrastructure1.Data;
+using ClassLibraryInfrastructure1.Data.Entities;
 
 namespace WebAppl1.Pages
 {
@@ -21,7 +21,12 @@ namespace WebAppl1.Pages
 
         public async Task OnGet()
         {
-            Astronautas = await _context.Astronauta.ToListAsync();
+            Astronautas = await _context.Astronauta
+                .Include(a => a.Pais) //Carga la información del país relacionado con cada astronauta
+                                      //Le dice a EntityFramework que cuando traiga los astronautas, haga también una consulta a la tabla
+                                      //Pais y una a la tabla Astronauta y las una.En SQL sería equivalente a un JOIN
+                                      //"por cada astronauta, incluye su Pais".
+                .ToListAsync();
         }
     }
 
