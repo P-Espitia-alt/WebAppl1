@@ -16,6 +16,8 @@
             + Asignar Misión a Astronauta
         </button>
 
+        <span asp-validation-summary="All" class="text-danger"></span>
+
         <div class="modal fade" id="modalAsignar" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -51,6 +53,27 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-6">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+                <div id="toastError" class="toast align-items-center text-bg-danger border-0 show" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                @error.ErrorMessage
+                            }
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -110,3 +133,17 @@
         <p>No hay astronautas registrados.</p>
     }
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var toast = document.getElementById('toastError');
+        if (toast) {
+            setTimeout(function () {
+                toast.classList.remove('show');
+            }, 3000); // desaparece después de 3 segundos
+        }
+    </script>
+}

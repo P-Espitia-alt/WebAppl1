@@ -18,7 +18,7 @@ namespace WebAppl1.Pages
         public async Task OnGetAsync()
         {
             MisionesList = await _context.Mision
-                .Where(m => m.Estado == "Completada")
+                //.Where(m => m.Estado == "Completada")
                 .ToListAsync();
 
         }

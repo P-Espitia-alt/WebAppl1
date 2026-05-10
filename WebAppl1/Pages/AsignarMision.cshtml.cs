@@ -33,16 +33,60 @@ namespace WebAppl1.Pages
                                                           //se muestra en la tabla debajo del boton para que el usuario pueda ver quién está asignado a qué misión.
         public async Task OnGetAsync()
         {
+            await CargarSelectsAsync();
+        }
+
+        //Crea un objeto nuevo de tipo MisionAstronauta con los datos que llegaron del formulario
+        public async Task<IActionResult> OnPostAsync()
+        {
+            // verifica si ya existe esa combinación
+            var existe = await _context.MisionAstronauta
+                .AnyAsync(ma => ma.AstronautaID == AstronautaSeleccionado
+                             && ma.MisionID == MisionSeleccionada);
+
+            if (existe)
+            {
+                ModelState.AddModelError(string.Empty,
+                    "Este astronauta ya está asignado a esa misión.");
+                await CargarSelectsAsync();
+                return Page();
+            }
+
+            var relacion = new MisionAstronauta
+            {
+                AstronautaID = AstronautaSeleccionado,
+                MisionID = MisionSeleccionada,
+                Rol = Rol
+            };
+
+            _context.MisionAstronauta.Add(relacion);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty,
+                    "Este astronauta ya está asignado a esa misión.");
+                await CargarSelectsAsync();
+                return Page();
+            }
+
+            return RedirectToPage();
+        }
+
+        private async Task CargarSelectsAsync()
+        {
             AstronautasSelect = new SelectList(          //llenamos el dropdown de astronautas con todos los astronautas disponibles en la base de datos.
-                await _context.Astronauta.ToListAsync(), 
+                await _context.Astronauta.ToListAsync(),
                 "AstronautaId", "Nombre"                 //"AstronautaId" es el valor que se guarda y "Nombre" es lo que ve el usuario.
             );
-            
+
             MisionesSelect = new SelectList(
                 await _context.Mision
                 //.Where(m => m.Estado != "Completada") //solo mostrar misiones que no estén completadas,
-                                                        //para evitar asignar astronautas a misiones que ya terminaron.
-                .ToListAsync(), 
+                //para evitar asignar astronautas a misiones que ya terminaron.
+                .ToListAsync(),
                 "MisionId", "Nombre"
             );
 
@@ -52,21 +96,7 @@ namespace WebAppl1.Pages
                 .ToListAsync();
         }
 
-        //Crea un objeto nuevo de tipo MisionAstronauta con los datos que llegaron del formulario
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var relacion = new MisionAstronauta
-            {
-                AstronautaID = AstronautaSeleccionado,
-                MisionID = MisionSeleccionada,
-                Rol = Rol
-            };
 
-            _context.MisionAstronauta.Add(relacion);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage();
-        }
 
     }
 }

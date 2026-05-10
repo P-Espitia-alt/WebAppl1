@@ -20,6 +20,7 @@ namespace WebAppl1.Pages
         [BindProperty]
         public Astronauta Astronauta { get; set; } = new();
         public SelectList PaisesSelect { get; set; }
+        public DateTime FechaMaxima { get; set; } //para la edad
 
         public async Task OnGetAsync()
         {
@@ -29,10 +30,17 @@ namespace WebAppl1.Pages
             );
 
             Astronauta.FechaNacimiento = DateTime.Today;
+            FechaMaxima = DateTime.Today.AddYears(-18);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (Astronauta.FechaNacimiento == DateTime.MinValue ||
+                Astronauta.FechaNacimiento > DateTime.Today.AddYears(-18))
+            {
+                ModelState.AddModelError("Astronauta.FechaNacimiento",
+                    "El astronauta debe tener al menos 18 años");
+            }
             if (!ModelState.IsValid)
             {
                 PaisesSelect = new SelectList(
@@ -41,9 +49,10 @@ namespace WebAppl1.Pages
                     );
                 return Page();
             }
+            
             _context.Astronauta.Add(Astronauta);
             await _context.SaveChangesAsync();
-            return RedirectToPage("/Mision");
+            return RedirectToPage("/Privacy");
         }
 
 

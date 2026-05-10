@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Astronauta.FechaNacimiento" class="control-label"></label>
-        <input asp-for="Astronauta.FechaNacimiento" type="date" class="form-control" min="1900-01-01" max="2100-12-31" />
+        <input asp-for="Astronauta.FechaNacimiento" type="date" class="form-control" min="1926-01-01" max="@Model.FechaMaxima.ToString("yyyy-MM-dd")" />
         <span asp-validation-for="Astronauta.FechaNacimiento" class="text-danger"></span>
     </div>
     <div class="mb-3">
@@ -40,3 +40,9 @@
         <input type="submit" value="Crear" class="btn btn-primary" />
     </div>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
