@@ -4,6 +4,10 @@ namespace ClassLibraryInfrastructure1.Data.Entities
 {
     public class Astronauta
     {
+        public Astronauta()
+        {
+        }
+
         public int AstronautaId { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }

@@ -4,17 +4,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClassLibraryInfrastructure1.Data;
 using ClassLibraryInfrastructure1.Data.Entities;
+using ClassLibraryInfrastructure1.Repositories.Interfaces;
 
 namespace WebAppl1.Pages
 {
-    public class IndexModel : PageModel
+    public class AgregarAstronautaModel : PageModel
     {
 
-        private readonly AppDbContext _context;
+        private readonly IPaisRepository _paisRepository;
+        private readonly IAstronautaRepository _astronautaRepository;
 
-        public IndexModel(AppDbContext context)
+        public AgregarAstronautaModel(IPaisRepository paisRepository, IAstronautaRepository astronautaRepository)
         {
-            _context = context;
+            _paisRepository = paisRepository;
+            _astronautaRepository = astronautaRepository;
         }
 
         [BindProperty]
@@ -25,7 +28,7 @@ namespace WebAppl1.Pages
         public async Task OnGetAsync()
         {
             PaisesSelect = new SelectList(
-                await _context.Pais.ToListAsync(), 
+                await _paisRepository.GetAllAsync(), 
                 "PaisId", "Nombre"
             );
 
@@ -44,17 +47,14 @@ namespace WebAppl1.Pages
             if (!ModelState.IsValid)
             {
                 PaisesSelect = new SelectList(
-                    await _context.Pais.ToListAsync(),
+                    await _paisRepository.GetAllAsync(),
                     "PaisId", "Nombre"
                     );
                 return Page();
             }
             
-            _context.Astronauta.Add(Astronauta);
-            await _context.SaveChangesAsync();
-            return RedirectToPage("/Privacy");
+            await _astronautaRepository.CreateAsync(Astronauta);
+            return RedirectToPage("/Astronautas");
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="APIWebAppl1/APIWebAppl1.csproj" Id="f3c35312-624e-45cd-ac47-ea61c2914890" />
   <Project Path="ClassLibraryInfrastructure1/ClassLibraryInfrastructure1.csproj" Id="ec003b44-e59a-4de3-8b08-00a48d93a21f" />
   <Project Path="WebAppl1/WebAppl1.csproj" />
 </Solution>
