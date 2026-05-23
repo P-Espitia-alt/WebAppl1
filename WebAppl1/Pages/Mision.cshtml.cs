@@ -1,26 +1,23 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ClassLibraryInfrastructure1.Data;
 using ClassLibraryInfrastructure1.Data.Entities;
+using ClassLibraryInfrastructure1.Repositories.Interfaces;
 
 namespace WebAppl1.Pages
 {
     public class MisionModel : PageModel
     {
-        private readonly AppDbContext _context;
-        public MisionModel(AppDbContext context)
+        private readonly IMisionRepository _misionRepository;
+
+        public MisionModel(IMisionRepository misionRepository)
         {
-            _context = context;
+            _misionRepository = misionRepository;
         }
 
         public List<Mision> MisionesList { get; set; } = new();
-        public async Task OnGetAsync()
+        public async Task OnGet()
         {
-            MisionesList = await _context.Mision
-                //.Where(m => m.Estado == "Completada")
-                .ToListAsync();
-
+           
+            MisionesList = await _misionRepository.GetAllAsync();
         }
     }
 }
