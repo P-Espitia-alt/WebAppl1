@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ClassLibraryInfrastructure1.Repositories
 {
@@ -24,7 +25,7 @@ namespace ClassLibraryInfrastructure1.Repositories
             List<Pais> Paises = new List<Pais>();
             try
             {
-                Paises = await _context.Pais.ToListAsync();
+                Paises = await _context.Pais.ToListAsync<Pais>();
             }
             catch (Exception ex)
             {

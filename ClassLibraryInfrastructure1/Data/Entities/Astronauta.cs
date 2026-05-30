@@ -8,12 +8,10 @@ namespace ClassLibraryInfrastructure1.Data.Entities
         {
         }
 
-        /*
-         * public string NombreUsuario { get; set; }
-        public string Contrasenia { get; set; }
-        public string Token { get; set; }
-        */
-
+        public string Usuario { get; set; }
+        public string Contrasena { get; set; }
+        public string? Token { get; set; }
+        
         public int AstronautaId { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
