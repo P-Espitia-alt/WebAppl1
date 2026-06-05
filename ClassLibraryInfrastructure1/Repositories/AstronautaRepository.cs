@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ClassLibraryInfrastructure1.Repositories
 {
@@ -29,8 +30,8 @@ namespace ClassLibraryInfrastructure1.Repositories
                                                           //Le dice a EntityFramework que cuando traiga los astronautas, haga también una consulta a la tabla
                                                           //Pais y una a la tabla Astronauta y las una.En SQL sería equivalente a un JOIN
                                                           //"por cada astronauta, incluye su Pais".
-                                    .ToListAsync();
-                
+                                    .ToListAsync<Astronauta>();
+
             }
             catch (Exception ex)
             {
@@ -65,7 +66,7 @@ namespace ClassLibraryInfrastructure1.Repositories
                 Astronautas = await _context.Astronauta
                     .Include(a => a.MisionesAsignadas) //Include: trae las relaciones MisionAstronauta de cada astronauta
                     .ThenInclude(ma => ma.Mision)      //ThenInclude: dentro de cada relación, trae la Mision completa
-                    .ToListAsync();
+                    .ToListAsync<Astronauta>();
             }
             catch (Exception ex)
             {
@@ -73,6 +74,59 @@ namespace ClassLibraryInfrastructure1.Repositories
                 throw new Exception("Error al obtener los astronautas con misiones.", ex);
             }
             return Astronautas;
+        }
+
+        public async Task<Astronauta?> LoginAsync(string usuario, string contrasena)
+        {
+            return await _context.Astronauta
+            .FirstOrDefaultAsync(a => a.Usuario == usuario && a.Contrasena == contrasena);
+        }
+
+        public async Task<Astronauta?> GetByIdAsync(int id)
+        {
+            return await _context.Astronauta.FirstOrDefaultAsync(a => a.AstronautaId == id);
+        }
+
+        public async Task UpDateTokenAsync(int AstronautaId, string token)
+        {
+            var astronauta = await GetByIdAsync(AstronautaId);
+            if (astronauta != null)
+            {
+                astronauta.Token = token;
+                _context.Astronauta.Update(astronauta);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Astronauta no encontrado para actualizar el token.");
+            }
+        }
+
+        public async Task<Astronauta> UpdateById(int id, Astronauta astronauta)
+        {
+            var astronautaExistente = await _context.Astronauta
+                .FirstOrDefaultAsync(a => a.AstronautaId == id);
+
+            if (astronautaExistente is null)
+            {
+                throw new KeyNotFoundException($"No se encontró el astronauta con id {id}.");
+            }
+
+            astronautaExistente.Usuario = astronauta.Usuario;
+            astronautaExistente.Contrasena = astronauta.Contrasena;
+            astronautaExistente.Nombre = astronauta.Nombre;
+            astronautaExistente.Apellido = astronauta.Apellido;
+            astronautaExistente.FechaNacimiento = astronauta.FechaNacimiento;
+            astronautaExistente.PaisId = astronauta.PaisId;
+            astronautaExistente.TotalMisiones = astronauta.TotalMisiones;
+
+            // para permitir actualizar token desde este método.
+            astronautaExistente.Token = astronauta.Token;
+
+            _context.Astronauta.Update(astronautaExistente);
+            await _context.SaveChangesAsync();
+
+            return astronautaExistente;
         }
     }
 }
