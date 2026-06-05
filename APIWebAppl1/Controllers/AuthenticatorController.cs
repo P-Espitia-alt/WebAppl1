@@ -25,46 +25,42 @@ namespace APIWebAppl1.Controllers
         [HttpPost("login", Name = "Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             try
             {
-                var Astronauta = await _astronautaRepository.LoginAsync(request.Usuario, request.Contrasena);
-                if (Astronauta != null)
-                {
-                     var token = _jwtHelper.GenerateToken(Astronauta.Usuario, Astronauta.AstronautaId);
-                    await _astronautaRepository.UpDateTokenAsync(Astronauta.AstronautaId, token);
+                var astronauta = await _astronautaRepository.LoginAsync(request.Usuario.Trim(), request.Contrasena);
 
-                    ApiResponse<string> response = new()
-                    {
-                        Data = token,
-                        Message = "Login exitoso",
-                        StatusCode = 200
-                    };
-                    return Ok(response);
-                }
-                else
+                if (astronauta is null)
                 {
-                    ApiResponse<string> response = new()
+                    return Unauthorized(new ApiResponse<string>
                     {
-                        Data = " :(( ",
+                        Data = string.Empty,
                         Message = "Usuario o contraseña incorrectos",
                         StatusCode = 401
-                    };
-                    return Unauthorized(response);
+                    });
                 }
+
+                astronauta.Token = _jwtHelper.GenerateToken(astronauta.Usuario, astronauta.AstronautaId);
+                await _astronautaRepository.UpdateById(astronauta.AstronautaId, astronauta);
+
+                return Ok(new ApiResponse<string>
+                {
+                    Data = astronauta.Token,
+                    Message = "Login exitoso",
+                    StatusCode = 200
+                });
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                ApiResponse<string> response = new()
+                return StatusCode(500, new ApiResponse<string>
                 {
                     Data = ex.Message,
                     Message = "No se pudo realizar el inicio de sesión",
                     StatusCode = 500
-                };
-                return StatusCode(500, response);
+                });
             }
-
-            
         }
     }
 }

@@ -1,8 +1,13 @@
-﻿namespace APIWebAppl1.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace APIWebAppl1.DTO
 {
     public class LoginRequest
     {
-        public string Usuario { get; set; }
-        public string Contrasena { get; set; }
+        [Required]
+        public string Usuario { get; set; } = string.Empty;
+
+        [Required]
+        public string Contrasena { get; set; } = string.Empty;
     }
 }

@@ -12,6 +12,7 @@ namespace ClassLibraryInfrastructure1.Repositories.Interfaces
         public Task<List<Astronauta>> GetAllWithMissionsAsync();
         public Task<Astronauta?> LoginAsync(string usuario, string contrasena);
         public Task<Astronauta?> GetByIdAsync(int id);
-        public Task UpDateTokenAsync(int AstronautaId, string token); 
+        public Task UpDateTokenAsync(int AstronautaId, string token);
+        public Task<Astronauta> UpdateById(int id, Astronauta astronauta);
     }
 }

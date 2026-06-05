@@ -102,5 +102,31 @@ namespace ClassLibraryInfrastructure1.Repositories
             }
         }
 
+        public async Task<Astronauta> UpdateById(int id, Astronauta astronauta)
+        {
+            var astronautaExistente = await _context.Astronauta
+                .FirstOrDefaultAsync(a => a.AstronautaId == id);
+
+            if (astronautaExistente is null)
+            {
+                throw new KeyNotFoundException($"No se encontró el astronauta con id {id}.");
+            }
+
+            astronautaExistente.Usuario = astronauta.Usuario;
+            astronautaExistente.Contrasena = astronauta.Contrasena;
+            astronautaExistente.Nombre = astronauta.Nombre;
+            astronautaExistente.Apellido = astronauta.Apellido;
+            astronautaExistente.FechaNacimiento = astronauta.FechaNacimiento;
+            astronautaExistente.PaisId = astronauta.PaisId;
+            astronautaExistente.TotalMisiones = astronauta.TotalMisiones;
+
+            // para permitir actualizar token desde este método.
+            astronautaExistente.Token = astronauta.Token;
+
+            _context.Astronauta.Update(astronautaExistente);
+            await _context.SaveChangesAsync();
+
+            return astronautaExistente;
+        }
     }
 }
